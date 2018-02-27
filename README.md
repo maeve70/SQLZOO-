@@ -1,3 +1,4 @@
 # SQLZOO-
 SELECT Aggregates and SELECT within SELECT (subqueries)
-Practice
+HAVING, GROUP BY, etc.
+Practice, practice, practice
