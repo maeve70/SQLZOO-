@@ -1,0 +1,85 @@
+/*Group BY and HAVING , SUM COUNT...more from SQLZOO*/
+--For each continent show the number of countries
+
+
+--world(name, continent, area, population, gdp)
+
+SELECT continent, COUNT(name)
+  FROM world
+ GROUP BY continent;
+ 
+ 
+--For each continent, show the total pop
+
+
+SELECT continent, SUM(population)
+FROM world
+GROUP BY continent;
+
+
+/*For each relevant continent show the number of countries that has 
+a population of at least 200000000.*/
+
+SELECT continent, COUNT(name)
+FROM world
+WHERE population>200000000
+GROUP BY continent;
+ 
+ 
+ 
+/*Show the total population of those continents with a total population 
+of at least half a billion.*/
+
+SELECT continent, SUM(population)
+FROM world
+GROUP BY continent
+HAVING SUM(population)>500000000;
+
+
+--For each continent show the continent & number of countries
+
+SELECT continent, COUNT(name)
+FROM world
+GROUP BY continent;
+
+
+--For each continent show the continent and number of countries w/pop of at least 10 million
+
+SELECT continent, COUNT(name)
+FROM world
+WHERE population >= 10000000
+GROUP BY continent;
+
+--List continents having a total pop of at least 100M
+
+SELECT continent
+FROM world
+GROUP BY continent
+HAVING sum(population) > 100000000;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
