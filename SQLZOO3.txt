@@ -1,0 +1,129 @@
+/*From SQLZOO. JOINS. three tables, game, goal, eteam*/
+
+
+--Show id, stadium, team 1, team 2 for just game 1012
+
+SELECT id, stadium, team1, team2
+FROM game
+WHERE is = 1012;
+
+
+--show player, teamid, stadium, mdate for every German goal
+
+SELECT player,teamid, stadium, mdate
+FROM game JOIN goal ON (id=matchid)
+WHERE teamid ='GER';
+
+
+--show team1, team2 and player for every goal scored by a player called Mario
+SELECT team1, team2, player
+FROM game 
+JOIN goal ON (id=matchid)
+WHERE player LIKE 'Mario%';
+
+--show player, teamis, coach, gtime for all goals scored in the first 10 minutes
+SELECT player, teamid, coach, gtime
+FROM goal 
+JOIN eteam ON teamid = id
+WHERE gtime<=10;
+
+
+--list dates of matches & the name of the team in which 'Fernando Santos' was the team1 coach.
+
+SELECT mdate, teamname
+FROM game
+JOIN eteam ON team1=eteam.id
+WHERE coach = 'Fernando Santos';
+
+
+/*list the player for every goal scored in a game
+where the stadium was National Stadium, Warsaw   */
+
+SELECT player
+FROM goal
+JOIN game ON matchid=game.id
+WHERE stadium = 'National Stadium, Warsaw';
+
+
+/*show the name of all players who scored a goal against Germany*/
+
+SELECT DISTINCT player
+FROM game 
+JOIN goal ON matchid = game.id 
+WHERE teamid != 'GER' AND (team1='GER' OR team2='GER');
+
+
+--show teamname & the total number of goals scored.
+
+SELECT  teamname, COUNT(teamid)
+FROM eteam JOIN goal ON id=teamid
+GROUP BY teamname;
+
+
+--show the stadium and the number of goals scored in each stadium
+SELECT stadium, COUNT(stadium)
+FROM game
+JOIN goal ON id=matchid
+GROUP BY stadium;
+
+--for every match involving 'POL', show the matchid, date and the number of goals scored.
+
+SELECT  matchid,mdate, COUNT(matchid)
+FROM game JOIN goal ON matchid = id 
+WHERE team1='POL' OR team2='POL'
+GROUP BY matchid, mdate;
+
+--for every match where 'GER' scored, show matchid, match date & the no. of goals scored by 'GER'
+
+SELECT matchid, mdate, COUNT(teamid)
+FROM game
+JOIN goal ON matchid=id
+WHERE teamid ='GER'
+GROUP BY matchid, mdate;
+
+
+
+/*List every match with the goals scored by each team as shown. 
+This will use "CASE WHEN".
+mdate	team1	score1	team2	score2
+1 July 2012	ESP	4	ITA	0
+10 June 2012	ESP	1	ITA	1
+10 June 2012	IRL	1	CRO	3
+
+  */
+
+SELECT mdate, team1,
+SUM( CASE WHEN teamid=team1 THEN 1 ELSE 0 END) score1, team2,
+SUM(CASE WHEN teamid=team2 THEN 1 ELSE 0 END) score2
+FROM game LEFT JOIN goal ON matchid = id
+GROUP BY mdate, matchid, team1, team2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
